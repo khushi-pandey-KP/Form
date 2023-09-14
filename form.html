@@ -77,9 +77,9 @@
     <img src="https://mitwpu.edu.in/uploads/logo/62d936ea919eb1658402538.png" alt="Logo" class="logo">
     <h1>Registration Form</h1>
     <p>Fill the details</p>
-    <form>
+    <form id="registrationForm">
       <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
+      <input type="text" id="name" name="name" required onkeydown="return /[a-zA-Z]/i.test(event.key)">
       
       <label for="dob">Date of Birth:</label>
       <input type="date" id="dob" name="dob" required>
@@ -117,5 +117,78 @@
     <h2>Dashboard</h2>
     <p>Loading...</p>
   </div>
-</body>
-</html>
+
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- jQuery Form Validation -->
+  <script>
+    $(document).ready(function () {
+      $("#registrationForm").submit(function (e) {
+        e.preventDefault();
+
+        // Reset previous error messages
+        $(".error").remove();
+
+        // Perform form validation
+        let isValid = true;
+
+        // Name validation
+        const name = $("#name").val();
+        if (!name) {
+          $("<p class='error'>Name is required</p>").insertAfter("#name");
+          isValid = false;
+        }
+
+        // Date of Birth validation
+        const dob = $("#dob").val();
+        if (!dob) {
+          $("<p class='error'>Date of Birth is required</p>").insertAfter("#dob");
+          isValid = false;
+        }
+
+        // Place validation
+        const place = $("#place").val();
+        if (!place) {
+          $("<p class='error'>Place is required</p>").insertAfter("#place");
+          isValid = false;
+        }
+
+        // Address validation
+        const address = $("#address").val();
+        if (!address) {
+          $("<p class='error'>Address is required</p>").insertAfter("#address");
+          isValid = false;
+        }
+
+        // Pincode validation
+        const pincode = $("#pincode").val();
+        if (!pincode || isNaN(pincode) || pincode.length !== 6) {
+          $("<p class='error'>Invalid Pincode (6 digits) is required</p>").insertAfter("#pincode");
+          isValid = false;
+        }
+
+        // Mobile Number validation
+        const mobile = $("#mobile").val();
+        if (!mobile || isNaN(mobile) || mobile.length !== 10) {
+          $("<p class='error'>Invalid Mobile Number (10 digits) is required</p>").insertAfter("#mobile");
+          isValid = false;
+        }
+
+        // Email validation
+        const email = $("#email").val();
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!email || !email.match(emailPattern)) {
+          $("<p class='error'>Invalid Email Address is required</p>").insertAfter("#email");
+          isValid = false;
+        }
+
+        // Verify checkbox validation
+        if (!$("#verify").prop("checked")) {
+          $("<p class='error'>Please verify all the details</p>").insertAfter("#verify");
+          isValid = false;
+        }
+
+        // If all validations pass, submit the form
+        if (isValid) {
+          alert("Form submitted successfully!");
